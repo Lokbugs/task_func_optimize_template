@@ -1,4 +1,4 @@
-module task_optimize_my_solution
+module github.com/Lokbugs/task_func_optimize_template
 
 go 1.18
 
