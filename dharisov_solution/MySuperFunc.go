@@ -13,21 +13,43 @@ func MySuperFuncImpl(x1 float64, x2 float64, n uint8) float64 {
 
     var f_number float64 = GetFibonacciNumber(n)
 
-	return math.Pow(x1, GetFibonacciNumber_OverOne(f_number, n)) * math.Pow(x2, f_number)
+	return math.Pow(x1, GetFibonacciNumber_OverOne(f_number, n) - f_number) * math.Pow(x1 * x2, f_number)
 }
 
 var golden_ratio float64 = (1 + math.Sqrt(5.00000000))/2
 
-func GetFibonacciNumber(n uint8) float64 {
-    var n_as_float64 float64 = float64(n)
-    var number = (math.Pow(golden_ratio, n_as_float64) - math.Pow(-golden_ratio, -n_as_float64))/(2*golden_ratio-1)
-    return math.Round(number)
+func GetFibonacciNumber(n uint8) uint32 {
+    var gr_in_power = math.Pow(golden_ratio, float64(n))
+        if (n % 2 == 0){
+            return uint32(math.Round((gr_in_power - 1/gr_in_power)/(2*golden_ratio-1)))
+        } else {
+            return uint32(math.Round((gr_in_power + 1/gr_in_power)/(2*golden_ratio-1)))
+        }
 }
 
-func GetFibonacciNumber_OverOne(f_number float64, n uint8) float64 {
+func GetFibonacciNumber_OverOne(f_number float64, n uint8) uint32 {
     if (n%2==0){
-        return (f_number + math.Sqrt(5*f_number*f_number + 4))/2
+        return uint32((f_number + math.Sqrt(5*f_number*f_number + 4))/2)
     }else{
-        return (f_number + math.Sqrt(5*f_number*f_number - 4))/2
+        return uint32((f_number + math.Sqrt(5*f_number*f_number - 4))/2)
     }
+}
+
+func power(number float64, power uint64) float64 {
+    var count uint8 = 31
+    var not_zero_beat_number uint4 = 32
+    for power >> count < 0 {
+        not_zero_beat_number -= 1
+        count -= 1
+    }
+}
+
+func get_older_beat(number uint8) uint8 {
+    var count uint8 = 31
+
+    for (number >> count) == 0 {
+            count -= 1
+        }
+
+    return count
 }
