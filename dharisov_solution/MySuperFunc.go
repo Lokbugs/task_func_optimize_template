@@ -10,46 +10,47 @@ import (
 // 3. `n>1` -> `f(x1, x2, n-2) * f(x1, x2, n-1)`
 func MySuperFuncImpl(x1 float64, x2 float64, n uint8) float64 {
 	// изначально текст полностью повторяет BasicSuperFuncImpl
+    if n == 0 {return x1}
+    if n == 1 {return x1 * x2}
 
-    var f_number float64 = GetFibonacciNumber(n)
+    var f_number = GetFibonacciNumber(n)
+    var f float64 = float64(f_number)
+    var f_number_next uint64
+    if n > 2 {
+        f_number_next = uint64(f*golden_ratio)
+    }else {
+        if n%2 == 0 {
+            f_number_next = uint64(math.Round((f + math.Sqrt(5*f*f + 4))/2))
+        } else {
+            f_number_next = uint64(math.Round((f + math.Sqrt(5*f*f - 4))/2))
+        }
+    }
 
-	return math.Pow(x1, GetFibonacciNumber_OverOne(f_number, n) - f_number) * math.Pow(x1 * x2, f_number)
+    return power(x1, (f_number_next - f_number)) * power(x1*x2, f_number)
 }
 
 var golden_ratio float64 = (1 + math.Sqrt(5.00000000))/2
+var sqrt5 = math.Sqrt(5)
 
-func GetFibonacciNumber(n uint8) uint32 {
-    var gr_in_power = math.Pow(golden_ratio, float64(n))
-        if (n % 2 == 0){
-            return uint32(math.Round((gr_in_power - 1/gr_in_power)/(2*golden_ratio-1)))
-        } else {
-            return uint32(math.Round((gr_in_power + 1/gr_in_power)/(2*golden_ratio-1)))
-        }
-}
+func GetFibonacciNumber(n uint8) uint64 {
+    var gr_in_power = power(golden_ratio, uint64(n))
 
-func GetFibonacciNumber_OverOne(f_number float64, n uint8) uint32 {
-    if (n%2==0){
-        return uint32((f_number + math.Sqrt(5*f_number*f_number + 4))/2)
-    }else{
-        return uint32((f_number + math.Sqrt(5*f_number*f_number - 4))/2)
-    }
+    return uint64(math.Round((gr_in_power)/sqrt5))
 }
 
 func power(number float64, power uint64) float64 {
-    var count uint8 = 31
-    var not_zero_beat_number uint4 = 32
-    for power >> count < 0 {
-        not_zero_beat_number -= 1
-        count -= 1
-    }
-}
+	var result float64 = 1
+	var base_coef = number
+	var current_power_value = power
 
-func get_older_beat(number uint8) uint8 {
-    var count uint8 = 31
+	for current_power_value > 0 {
+		if current_power_value&1 == 1 {
+			result = result * base_coef
+		}
+		base_coef = base_coef * base_coef
 
-    for (number >> count) == 0 {
-            count -= 1
-        }
+		current_power_value = current_power_value >> 1
+	}
 
-    return count
+	return result
 }
