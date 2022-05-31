@@ -4,10 +4,9 @@ import (
 	"math"
 )
 
-// MySuperFuncImpl MySuperFunc - реализация
-// 1. `n==0` -> `x1`
-// 2. `n==1` -> `x1 * x2`
-// 3. `n>1` -> `f(x1, x2, n-2) * f(x1, x2, n-1)`
+var golden_ratio float64 = (1 + sqrt5)/2
+var sqrt5 = math.Sqrt(5)
+
 func MySuperFuncImpl(x1 float64, x2 float64, n uint8) float64 {
 	// изначально текст полностью повторяет BasicSuperFuncImpl
     if n == 0 {return x1}
@@ -28,9 +27,6 @@ func MySuperFuncImpl(x1 float64, x2 float64, n uint8) float64 {
 
     return power(x1, (f_number_next - f_number)) * power(x1*x2, f_number)
 }
-
-var golden_ratio float64 = (1 + math.Sqrt(5.00000000))/2
-var sqrt5 = math.Sqrt(5)
 
 func GetFibonacciNumber(n uint8) uint64 {
     var gr_in_power = power(golden_ratio, uint64(n))
