@@ -15,7 +15,7 @@ func MySuperFuncImpl(x1 float64, x2 float64, n uint8) float64 {
     var f_number = GetFibonacciNumber(n)
     var f float64 = float64(f_number)
     var f_number_next uint64
-    if n > 2 {
+    if n > 10 {
         f_number_next = uint64(f*golden_ratio)
     }else {
         if n%2 == 0 {
